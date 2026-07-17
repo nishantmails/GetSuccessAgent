@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
-from openpyxl.chart import BarChart, Reference
+from openpyxl.chart import BarChart, LineChart, Reference
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 from rich.console import Console
@@ -88,6 +88,55 @@ def _add_bell_curve_chart(wb, df_dist: pd.DataFrame, band_order: list[str]) -> N
     # Add chart to sheet
     ws_chart.add_chart(chart, "A6")
 
+
+def _add_histogram_chart(wb, df_ratings: pd.DataFrame) -> None:
+    """Create a histogram chart of composite scores on a new sheet."""
+    if df_ratings.empty:
+        return
+
+    ws = wb.create_sheet("Bell Curve Histogram")
+    scores = df_ratings["Composite Score"].astype(float)
+    bins = pd.cut(scores, bins=7, include_lowest=True)
+    hist = bins.value_counts(sort=False)
+
+    ws["A1"] = "Score Bin"
+    ws["B1"] = "Count"
+    for cell in ws[1]:
+        cell.fill = _HEADER_FILL
+        cell.font = _HEADER_FONT
+        cell.alignment = Alignment(horizontal="center")
+
+    for idx, (interval, count) in enumerate(hist.items(), start=2):
+        ws[f"A{idx}"] = f"{interval.left:.2f}–{interval.right:.2f}"
+        ws[f"B{idx}"] = int(count)
+
+    ws.column_dimensions["A"].width = 20
+    ws.column_dimensions["B"].width = 12
+
+    data = Reference(ws, min_col=2, min_row=1, max_row=len(hist) + 1)
+    cats = Reference(ws, min_col=1, min_row=2, max_row=len(hist) + 1)
+
+    bar = BarChart()
+    bar.type = "col"
+    bar.title = "Composite Score Histogram"
+    bar.x_axis.title = "Score Bin"
+    bar.y_axis.title = "Count"
+    bar.add_data(data, titles_from_data=True)
+    bar.set_categories(cats)
+    bar.width = 18
+    bar.height = 12
+
+    line = LineChart()
+    line.title = "Score Trend"
+    line.style = 12
+    line.y_axis.title = "Count"
+    line.add_data(data, titles_from_data=True)
+    line.set_categories(cats)
+    line.smooth = True
+    line.y_axis.crosses = "min"
+
+    bar += line
+    ws.add_chart(bar, "D5")
 
 
 def write_excel_report(
@@ -182,8 +231,9 @@ def write_excel_report(
             for col in range(1, ws.max_column + 1):
                 ws.cell(row=row, column=col).fill = fill
 
-        # ---- Add Bell Curve Chart Sheet ------------------------------------
+        # ---- Add Bell Curve Chart Sheets -----------------------------------
         _add_bell_curve_chart(wb, df_dist, band_order)
+        _add_histogram_chart(wb, df_ratings)
 
     return {"excel": str(path)}
 
