@@ -54,7 +54,20 @@ def main() -> None:
         )
 
     with open(args.config, encoding="utf-8") as fh:
-        cfg = yaml.safe_load(fh)
+        cfg = yaml.safe_load(fh) or {}
+
+    # Optional master data file to override config values (e.g., bell-curve bands)
+    master_path = Path("master_data.yaml")
+    if master_path.exists():
+        try:
+            with master_path.open(encoding="utf-8") as mh:
+                master = yaml.safe_load(mh) or {}
+                # Only override bell_curve.bands when present in master_data
+                if "bell_curve" in master and "bands" in master["bell_curve"]:
+                    cfg.setdefault("bell_curve", {})
+                    cfg["bell_curve"]["bands"] = master["bell_curve"]["bands"]
+        except Exception as exc:  # pragma: no cover - defensive
+            print(f"Warning: failed to load master_data.yaml: {exc}")
 
     from src.graph import build_app
     from src.llm import build_llm

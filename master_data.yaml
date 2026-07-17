@@ -1,0 +1,17 @@
+# Master data overrides for runtime configuration (editable by admins)
+# Use this file to set bell-curve band percentages without editing code.
+
+bell_curve:
+  bands:
+    - band: "Exceeds Expectations"
+      rating: 1
+      top_pct: 5
+    - band: "Meets Expectations"
+      rating: 3
+      top_pct: 10
+    - band: "Needs Improvement"
+      rating: 4
+      top_pct: 50
+    - band: "Below Expectations"
+      rating: 5
+      top_pct: 100
