@@ -1,0 +1,26 @@
+# ------------------------------------------------------------------
+# Year-End Review Agent configuration
+# ------------------------------------------------------------------
+llm:
+  model: gpt-4o-mini        # any chat model your OPENAI_API_KEY can access
+  temperature: 0.1          # low temperature -> consistent, auditable ratings
+
+# Weight of each feedback source in the composite score (must sum to 1.0)
+weights:
+  People Manager: 0.50
+  Account Manager: 0.30
+  HR: 0.20
+
+# Bell-curve fitment. Bands are evaluated top-down:
+# the top `top_pct` percentile of employees falls into the band.
+bell_curve:
+  bands:
+    - band: "Exceeds Expectations"
+      rating: 5
+      top_pct: 20
+    - band: "Meets Expectations"
+      rating: 3
+      top_pct: 90
+    - band: "Below Expectations"
+      rating: 1
+      top_pct: 100
