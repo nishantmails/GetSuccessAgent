@@ -92,8 +92,8 @@ class _StubStructured:
         if scores:
             hi, lo = max(scores.values()), min(scores.values())
             if hi - lo > 1.5:
-                hi_role = max(scores, key=scores.get)
-                lo_role = min(scores, key=scores.get)
+                hi_role = max(scores, key=lambda role: scores[role])
+                lo_role = min(scores, key=lambda role: scores[role])
                 flags.append(
                     f"Large divergence: {hi_role} ({hi}) vs {lo_role} ({lo}) — "
                     "verify both reviewers assessed the same period/projects."

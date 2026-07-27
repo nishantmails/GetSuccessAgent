@@ -7,11 +7,14 @@ bell_curve:
       rating: 1
       top_pct: 5
     - band: "Meets Expectations"
+      rating: 2
+      top_pct: 55
+    - band: "Needs Development"
       rating: 3
-      top_pct: 10
-    - band: "Needs Improvement"
+      top_pct: 70
+    - band: "Unsatisfactory Performance"
       rating: 4
-      top_pct: 50
-    - band: "Below Expectations"
+      top_pct: 85
+    - band: "Severe Compliance/Performance Issue"
       rating: 5
       top_pct: 100
