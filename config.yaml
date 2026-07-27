@@ -15,12 +15,18 @@ weights:
 # the top `top_pct` percentile of employees falls into the band.
 bell_curve:
   bands:
-    - band: "Exceeds Expectations"
-      rating: 5
-      top_pct: 20
-    - band: "Meets Expectations"
-      rating: 3
-      top_pct: 90
-    - band: "Below Expectations"
-      rating: 1
+    - rating: 1
+      top_pct: 5
+      band: "Exceeds Expectations"
+    - rating: 2
+      top_pct: 55
+      band: "Meets Expectations"
+    - rating: 3
+      top_pct: 70
+      band: "Needs Development"
+    - rating: 4
+      top_pct: 85
+      band: "Unsatisfactory Performance"
+    - rating: 5
       top_pct: 100
+      band: "Severe Compliance/Performance Issue"

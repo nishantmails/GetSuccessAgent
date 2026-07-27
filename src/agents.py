@@ -35,11 +35,11 @@ Analyse the following year-end feedback from this reviewer, objectively and only
 on the evidence present in the text.
 
 Scoring rubric (score field):
-    5 = exceptional, clearly exceeds role expectations
-    4 = exceeds expectations in several areas
+    1 = exceptional, clearly exceeds role expectations
+    2 = exceeds expectations in several areas
     3 = fully meets expectations
-    2 = partially meets expectations, notable gaps
-    1 = below expectations
+    4 = partially meets expectations, notable gaps
+    5 = below expectations
 
 Rules:
 - Do not invent accomplishments that are not in the text.
